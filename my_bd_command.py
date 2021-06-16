@@ -29,8 +29,10 @@ def insert_news(col1, col2, col3, col4):
     with sqlite3.connect("news_bd_saved_with_sqlite.db") as db:
         cursor = db.cursor()
         data_list = (col1, col2, col3, col4, datetime.datetime.now())
-        cursor.execute("""INSERT INTO news (link, title, content, publish_date, parsing_date) 
-                            VALUES (?, ?, ?, ?, ?);""", data_list)
+        cursor.execute("""
+                        INSERT INTO news (link, title, content, publish_date, parsing_date) 
+                        VALUES (?, ?, ?, ?, ?);
+                            """, data_list)
         db.commit()
 
 
@@ -53,5 +55,8 @@ def get_data_from_db():
     with sqlite3.connect("news_bd_saved_with_sqlite.db") as db:
         cursor = db.cursor()
         cursor.execute("""SELECT title, link, publish_date FROM news""")
-        data_set = cursor.fetchall()
+        # вывод всех новостей
+        #data_set = cursor.fetchall()
+        # вывод 5 последних новостей
+        data_set = cursor.fetchmany(5)
         return data_set
